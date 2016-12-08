@@ -6,7 +6,7 @@
     <entry>
       <title><![CDATA[multipart/form-data方式的多图片上传]]></title>
       <url>http://www.bigliang.com/2016/12/08/multipart-form-data%E6%96%B9%E5%BC%8F%E7%9A%84%E5%A4%9A%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0/</url>
-      <content type="html"><![CDATA[<a id="more"></a>
+      <content type="html"><![CDATA[<p>多图片上传<a id="more"></a></p>
 <h2 id="multipart-form-data请求"><a href="#multipart-form-data请求" class="headerlink" title="multipart/form-data请求"></a>multipart/form-data请求</h2><p>http协议本身的原始方法不支持multipart/form-data请求，那这个请求自然就是由这些原始的方法演变而来的，具体如何演变且看下文：</p>
 <ul>
 <li><p>1、multipart/form-data的基础方法是post，也就是说是由post方法来组合实现的</p>
