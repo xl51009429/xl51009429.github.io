@@ -6,21 +6,19 @@
     <entry>
       <title><![CDATA[multipart/form-data方式的多图片上传]]></title>
       <url>http://www.bigliang.com/2016/12/08/multipart-form-data%E6%96%B9%E5%BC%8F%E7%9A%84%E5%A4%9A%E5%9B%BE%E7%89%87%E4%B8%8A%E4%BC%A0/</url>
-      <content type="html"><![CDATA[<h2 id="multipart-form-data请求"><a href="#multipart-form-data请求" class="headerlink" title="multipart/form-data请求"></a>multipart/form-data请求</h2><p>http协议本身的原始方法不支持multipart/form-data请求，那这个请求自然就是由这些原始的方法演变而来的，具体如何演变且看下文：</p>
+      <content type="html"><![CDATA[<a id="more"></a>
+<h2 id="multipart-form-data请求"><a href="#multipart-form-data请求" class="headerlink" title="multipart/form-data请求"></a>multipart/form-data请求</h2><p>http协议本身的原始方法不支持multipart/form-data请求，那这个请求自然就是由这些原始的方法演变而来的，具体如何演变且看下文：</p>
 <ul>
 <li><p>1、multipart/form-data的基础方法是post，也就是说是由post方法来组合实现的</p>
 </li>
 <li><p>2、multipart/form-data与post方法的不同之处：请求头，请求体。</p>
 </li>
 <li><p>3、multipart/form-data的请求头必须包含一个特殊的头信息：Content-Type，且其值也必须规定为multipart/form-data，同时还需要规定一个内容分割符用于分割请求体中的多个post的内容，如文件内容和文本内容自然需要分割开来，不然接收方就无法正常解析和还原这个文件了。具体的头信息如下：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Content-Type: multipart/form-data; boundary=$&#123;bound&#125;</div></pre></td></tr></table></figure>
+<p>  ${bound} 是一个占位符，代表我们规定的分割符，可以自己任意规定，但为了避免和正常文本重复了，尽量要使用复杂一点的内容，iOS开发可以使用UUID。</p>
 </li>
-<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Content-Type: multipart/form-data; boundary=$&#123;bound&#125;</div></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>${bound} 是一个占位符，代表我们规定的分割符，可以自己任意规定，但为了避免和正常文本重复了，尽量要使用复杂一点的内容，iOS开发可以使用UUID。</p>
-<ul>
-<li>4、multipart/form-data的请求体也是一个字符串，不过和post的请求体不同的是它的构造方式，post是简单的name=value值连接，而multipart/form-data则是添加了分隔符等内容的构造体。具体格式如下:</li>
-<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">--5CEDCCFA-7F63-4C2D-A3F5-02BD9D42DA80</div><div class="line">Content-Disposition: form-data; name=&quot;HouseId&quot;</div><div class="line"></div><div class="line">1886790</div><div class="line">--5CEDCCFA-7F63-4C2D-A3F5-02BD9D42DA80</div><div class="line">Content-Disposition: form-data; name=&quot;Method&quot;</div><div class="line"></div><div class="line">HouseUpImg</div><div class="line">--5CEDCCFA-7F63-4C2D-A3F5-02BD9D42DA80--</div></pre></td></tr></table></figure>
+<li><p>4、multipart/form-data的请求体也是一个字符串，不过和post的请求体不同的是它的构造方式，post是简单的name=value值连接，而multipart/form-data则是添加了分隔符等内容的构造体。具体格式如下:</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">--5CEDCCFA-7F63-4C2D-A3F5-02BD9D42DA80</div><div class="line">Content-Disposition: form-data; name=&quot;HouseId&quot;</div><div class="line"></div><div class="line">1886790</div><div class="line">--5CEDCCFA-7F63-4C2D-A3F5-02BD9D42DA80</div><div class="line">Content-Disposition: form-data; name=&quot;Method&quot;</div><div class="line"></div><div class="line">HouseUpImg</div><div class="line">--5CEDCCFA-7F63-4C2D-A3F5-02BD9D42DA80--</div></pre></td></tr></table></figure>
 </li>
 </ul>
 <p>可以很容易看出，这个请求体是多个相同的部分组成的：每一个部分都是以–加分隔符开始的，然后是该部分内容的描述信息，然后一个回车，然后是描述信息的具体内容；如果传送的内容是一个文件的话，那么还会包含文件名信息，以及文件内容的类型。上面的第二个小部分其实是一个文件体的结构，最后会以–分割符–结尾，表示请求体结束。</p>
