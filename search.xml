@@ -5,7 +5,7 @@
     
     <entry>
       <title><![CDATA[[转]深入理解RunLoop]]></title>
-      <url>http://www.bigliang.com/2016/12/27/%E8%BD%AC-%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3RunLoop/</url>
+      <url>http://www.bigliang.com/2016/12/27/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3RunLoop(%E8%BD%AC)/</url>
       <content type="html"><![CDATA[<p>RunLoop 是 iOS 和 OSX 开发中非常基础的一个概念，这篇文章将从 CFRunLoop 的源码入手，介绍 RunLoop 的概念以及底层实现原理。之后会介绍一下在 iOS 中，苹果是如何利用 RunLoop 实现自动释放池、延迟回调、触摸事件、屏幕刷新等功能的。</p>
 <h3 id="RunLoop-的概念"><a href="#RunLoop-的概念" class="headerlink" title="RunLoop 的概念"></a>RunLoop 的概念</h3><p>一般来讲，一个线程一次只能执行一个任务，执行完成后线程就会退出。如果我们需要一个机制，让线程能随时处理事件但并不退出，通常的代码逻辑是这样的：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">function loop() &#123;</div><div class="line">    initialize();</div><div class="line">    do &#123;</div><div class="line">        var message = get_next_message();</div><div class="line">        process_message(message);</div><div class="line">    &#125; while (message != quit);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
