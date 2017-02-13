@@ -12,12 +12,12 @@
 <ul>
 <li>发起请求</li>
 <li>首先调用<code>canInitWithRequest</code>方法，该方法表示是否对网络请求进行处理，如果返回NO，URL Loading System进行默认处理，表示不拦截。如果返回YES，表示自己要处理该请求，进行下一步。</li>
-<li>调用<code>canonicalRequestForRequest</code>，该方法返回NSURLRequest对象，在该方法中可以对NSURLRequest对象进行一些处理再返回，比如添加header，修改host。</li>
-<li>调用<code>startLoading</code>方法，开始发送请求。在这个方法里面也可以对这个request做各种处理，比如添加请求头，重定向网络，使用自定义的缓存等。</li>
+<li>调用<code>canonicalRequestForRequest</code>，该方法返回<code>NSURLRequest</code>对象，在该方法中可以对<code>NSURLRequest</code>对象进行一些处理再返回，比如添加header，修改host。</li>
+<li>调用<code>startLoading</code>方法，开始发送请求。在这个方法里面也可以对这个request做各种处理，比如添加请求头，重定向网络，使用自定义的缓存等。<code>[NSURLProtocol setProperty:@YES forKey:URLProtocolHandledKey inRequest:mutableReqeust]</code>使用该方法对<code>request</code>进行标记，防止循环处理一个请求。</li>
 <li>调用<code>stopLoading</code>方法，结束请求。</li>
 </ul>
-<p>上面的方法就对一个网络请求进行了拦截并且处理，并在<code>startLoading</code>里面重新发送了请求，但是新的请求跟拦截的请求不是同一个，被拦截的请求想收到<code>response</code>还得需要client对象。</p>
-<p>每一个<code>NSURLProtocol</code>的子类都有一个<code>client</code>对象，所有的<code>client</code>都实现了<code>NSURLProtocolClient</code>协议，可以通过<code>client</code>把新请求的<code>response</code>发给被拦截的请求，这样被拦截的请求也就可以收到<code>response</code>并且进行处理。<code>client</code>通过下面的方法进行response转发。</p>
+<p>上面的方法就对一个网络请求进行了拦截并且处理，并在<code>startLoading</code>里面重新发送了请求，但是新的请求跟拦截的请求不是同一个，被拦截的请求想收到<code>response</code>还得需要<code>client</code>对象。</p>
+<p>每一个<code>NSURLProtocol</code>的子类都有一个<code>client</code>对象，所有的<code>client</code>都实现了<code>NSURLProtocolClient</code>协议，可以通过<code>client</code>把新请求的<code>response</code>发给被拦截的请求，这样被拦截的请求也就可以收到<code>response</code>并且进行处理。<code>client</code>通过下面的方法进行<code>response</code>转发。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[self.client URLProtocol:self didReceiveResponse:response cacheStoragePolicy:NSURLCacheStorageNotAllowed];</div><div class="line">[self.client URLProtocol:self didLoadData:data];</div><div class="line">[self.client URLProtocolDidFinishLoading:self];</div><div class="line">[self.client URLProtocol:self didFailWithError:error];</div></pre></td></tr></table></figure>
 <h4 id="注册NSURLPtotocol的子类"><a href="#注册NSURLPtotocol的子类" class="headerlink" title="注册NSURLPtotocol的子类"></a>注册NSURLPtotocol的子类</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[NSURLProtocol registerClass:[BLURLProtocol class]];</div></pre></td></tr></table></figure>
 <p>要想自己定义的<code>BLURLProtocol</code>类起作用，就必须进行注册。相对应的也有<code>unregistClass</code>方法。</p>
