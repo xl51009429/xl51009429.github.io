@@ -4,6 +4,56 @@
   
     
     <entry>
+      <title><![CDATA[Java笔记]]></title>
+      <url>http://www.bigliang.com/2017/02/15/Java%E7%AC%94%E8%AE%B0/</url>
+      <content type="html"><![CDATA[<h4 id="response向页面输出中文乱码的问题"><a href="#response向页面输出中文乱码的问题" class="headerlink" title="response向页面输出中文乱码的问题"></a>response向页面输出中文乱码的问题</h4><ul>
+<li><p>字节</p>
+<p>  设置浏览器打开文件时的编码：</p>
+<p>  <code>response.setHeader(&quot;Content-Type&quot;,&quot;text/html;charset=UTF-8&quot;);</code></p>
+<p>  获取字符串的字节数组:</p>
+<p>  <code>&quot;中文字符&quot;.getBytes(&quot;UTF-8&quot;)</code></p>
+</li>
+<li><p>字符</p>
+<p>  设置浏览器打开文件时的编码：</p>
+<p>  <code>response.setHeader(&quot;Content-Type&quot;,&quot;text/html;charset=UTF-8&quot;);</code></p>
+<p>  设置response缓冲区的编码（默认是ISO-8859-1）</p>
+<p>  <code>response.setCharacterEncoding(&quot;UTF-8&quot;);</code></p>
+<p>  简写：</p>
+<p>  <code>response.setContentType(&quot;text/html;charset=UTF-8&quot;);</code></p>
+</li>
+</ul>
+<h4 id="request获取中文乱码的问题"><a href="#request获取中文乱码的问题" class="headerlink" title="request获取中文乱码的问题"></a>request获取中文乱码的问题</h4><ul>
+<li><p>post</p>
+<p>  设置request缓存区的编码</p>
+<p>  <code>request.setCharacterEncoding(&quot;UTF-8&quot;);</code></p>
+</li>
+<li><p>get</p>
+<p>  修改tomcat配置文件（不推荐）</p>
+<p>  通过String的构造方法</p>
+<p>  <code>username = new String(username.getBytes(&quot;ISO-8859-1&quot;),&quot;UTF-8&quot;);</code></p>
+</li>
+</ul>
+<h4 id="JSP的内置对象（9个）"><a href="#JSP的内置对象（9个）" class="headerlink" title="JSP的内置对象（9个）"></a>JSP的内置对象（9个）</h4><ul>
+<li>request <code>HttpServletRequest</code>对象</li>
+<li>response <code>HttpServletResponse</code>对象</li>
+<li>session <code>HttpSession</code>对象</li>
+<li>application <code>ServletContext</code>对象</li>
+<li>out <code>JspWriter</code>对象</li>
+<li>pageContext <code>PageContext</code>对象</li>
+<li>page <code>Object</code>对象</li>
+<li>config <code>ServletConfig</code>对象</li>
+<li>exception <code>Throwable</code>对象</li>
+</ul>
+<h4 id="JSP四个域对象"><a href="#JSP四个域对象" class="headerlink" title="JSP四个域对象"></a>JSP四个域对象</h4><ul>
+<li>servletContext:整个web应用</li>
+<li>session:一次会话</li>
+<li>request:一次请求</li>
+<li>pageContext:当前页面</li>
+</ul>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[NSURLProtocol学习]]></title>
       <url>http://www.bigliang.com/2017/02/13/NSURLProtocol%E5%AD%A6%E4%B9%A0/</url>
       <content type="html"><![CDATA[<p><code>NSURLPtotocol</code>类并不是一个protocol，他其实就是一个抽象类，可以继承该类重写类中的方法对网络请求进行拦截处理。可以拦截<code>UIWebView</code>，<code>NSURLSession</code>等发出的请求，但是不能拦截<code>WKWebView</code>的请求。<a id="more"></a></p>
